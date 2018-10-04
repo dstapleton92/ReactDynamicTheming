@@ -1,26 +1,30 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Header from './components/Header'
+import Content from './components/Content'
+import { CMSDataProvider } from './contexts/CMSData'
+import { getCMSData } from './services/cms'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      team: getCMSData('georgia'),
+      setTeam: this.setTeam
+    }
+  }
+
+  setTeam = team => {
+    this.setState({ team: getCMSData(team) })
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <CMSDataProvider value={this.state}>
+        <div className="mw8 center">
+          <Header />
+          <Content />
+        </div>
+      </CMSDataProvider>
     );
   }
 }
